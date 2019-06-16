@@ -71,7 +71,7 @@
     "prettier": "^1.15.3",
     "react": "16.8.0",
     "react-dom": "16.8.0",
-    "react-native": "0.55.4",
+    "react-native": "0.59.0",
     "react-native-vector-icons": "^6.0.2",
     "react-test-renderer": "^16.6.0",
     "webpack": "^2.2.1"
@@ -103,7 +103,7 @@
     "src/**/*.js": [
       "eslint --fix src",
       "git add",
-      "jest --bail --findRelatedTests"
+      "jest --env=jsdom --bail --findRelatedTests"
     ],
     "**/*.md": [
       "prettier --single-quote --trailing-comma=es5 --write"

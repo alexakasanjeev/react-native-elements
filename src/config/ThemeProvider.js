@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import deepmerge from 'deepmerge';
 
@@ -6,41 +6,22 @@ import colors from './colors';
 
 const ThemeContext = React.createContext();
 
-export default class ThemeProvider extends React.Component {
-  constructor(props) {
-    super(props);
+const ThemeProvider = ({ theme: propTheme, children }) => {
+  const [theme, setTheme] = useState(deepmerge({ colors }, propTheme));
 
-    this.state = {
-      theme: deepmerge(
-        {
-          colors,
-        },
-        props.theme
-      ),
-    };
-  }
+  const updateTheme = updates => setTheme(deepmerge(theme, updates));
 
-  updateTheme = updates => {
-    this.setState(({ theme }) => ({
-      theme: deepmerge(theme, updates),
-    }));
-  };
-
-  getTheme = () => this.state.theme;
-
-  render() {
-    return (
-      <ThemeContext.Provider
-        value={{
-          theme: this.state.theme,
-          updateTheme: this.updateTheme,
-        }}
-      >
-        {this.props.children}
-      </ThemeContext.Provider>
-    );
-  }
-}
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        updateTheme,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
+};
 
 ThemeProvider.propTypes = {
   theme: PropTypes.object,
@@ -50,5 +31,7 @@ ThemeProvider.propTypes = {
 ThemeProvider.defaultProps = {
   theme: {},
 };
+
+export default ThemeProvider;
 
 export const ThemeConsumer = ThemeContext.Consumer;
